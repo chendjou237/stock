@@ -99,6 +99,14 @@
                 nextLabel: 'next',
                 prevLabel: 'prev',
               }"
+              :summary-options="{
+                enabled: true,
+                position: 'bottom',
+                columns: [
+                  { field: 'montant', label: 'Total', summaryFunc: () => this.$t('Total') },
+                  { field: 'montant', summaryFunc: () => this.totalAmount }
+                ]
+              }"
             >
               <template slot="table-row" slot-scope="props">
                 <div v-if="props.column.field == 'actions'">
@@ -118,6 +126,9 @@
                 </span>
               </template>
             </vue-good-table>
+            <div class="total-amount-display mt-3">
+              <h4>{{ $t('TotalAmount') }}: {{ totalAmount }}</h4>
+            </div>
           </div>
         </div>
       </div>
@@ -154,6 +165,7 @@ export default {
         perPage: 10
       },
       totalRows: "",
+      totalAmount: 0,
       search: "",
       Filter_type: "",
       Filter_status: "",
@@ -309,6 +321,7 @@ export default {
         .then(response => {
           this.payments = response.data.payments;
           this.totalRows = response.data.totalRows;
+          this.totalAmount = this.payments.reduce((sum, payment) => sum + parseFloat(payment.montant), 0).toFixed(2);
           this.isLoading = false;
           NProgress.done();
         })

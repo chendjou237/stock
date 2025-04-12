@@ -32,6 +32,8 @@ class PaymentReportController extends Controller
 
         // Base query for each payment type with proper joins and calculations
         $salesQuery = PaymentSale::join('sales', 'payment_sales.sale_id', '=', 'sales.id')
+            ->join('sale_details', 'sales.id', '=', 'sale_details.sale_id')
+            ->join('products', 'sale_details.product_id', '=', 'products.id')
             ->where('payment_sales.deleted_at', '=', null)
             ->where('sales.deleted_at', '=', null)
             ->where(function ($query) use ($ShowRecord) {
@@ -45,15 +47,20 @@ class PaymentReportController extends Controller
                 DB::raw("'sales' as payment_type"),
                 'payment_sales.montant',
                 'sales.GrandTotal',
+                'products.name as product_name',
                 DB::raw('CASE
                     WHEN payment_sales.montant >= sales.GrandTotal THEN "paid"
                     WHEN payment_sales.montant > 0 THEN "partial"
                     ELSE "unpaid"
                 END as payment_status'),
                 'payment_sales.id'
-            );
+            )
+            ->groupBy('payment_sales.id', 'payment_sales.date', 'payment_sales.Ref', 'payment_sales.montant',
+                     'sales.GrandTotal', 'products.name', 'payment_sales.id');
 
         $purchasesQuery = PaymentPurchase::join('purchases', 'payment_purchases.purchase_id', '=', 'purchases.id')
+            ->join('purchase_details', 'purchases.id', '=', 'purchase_details.purchase_id')
+            ->join('products', 'purchase_details.product_id', '=', 'products.id')
             ->where('payment_purchases.deleted_at', '=', null)
             ->where('purchases.deleted_at', '=', null)
             ->where(function ($query) use ($ShowRecord) {
@@ -67,15 +74,20 @@ class PaymentReportController extends Controller
                 DB::raw("'purchases' as payment_type"),
                 'payment_purchases.montant',
                 'purchases.GrandTotal',
+                'products.name as product_name',
                 DB::raw('CASE
                     WHEN payment_purchases.montant >= purchases.GrandTotal THEN "paid"
                     WHEN payment_purchases.montant > 0 THEN "partial"
                     ELSE "unpaid"
                 END as payment_status'),
                 'payment_purchases.id'
-            );
+            )
+            ->groupBy('payment_purchases.id', 'payment_purchases.date', 'payment_purchases.Ref', 'payment_purchases.montant',
+                     'purchases.GrandTotal', 'products.name', 'payment_purchases.id');
 
         $saleReturnsQuery = PaymentSaleReturns::join('sale_returns', 'payment_sale_returns.sale_return_id', '=', 'sale_returns.id')
+            ->join('sale_return_details', 'sale_returns.id', '=', 'sale_return_details.sale_return_id')
+            ->join('products', 'sale_return_details.product_id', '=', 'products.id')
             ->where('payment_sale_returns.deleted_at', '=', null)
             ->where('sale_returns.deleted_at', '=', null)
             ->where(function ($query) use ($ShowRecord) {
@@ -89,15 +101,20 @@ class PaymentReportController extends Controller
                 DB::raw("'sale_returns' as payment_type"),
                 'payment_sale_returns.montant',
                 'sale_returns.GrandTotal',
+                'products.name as product_name',
                 DB::raw('CASE
                     WHEN payment_sale_returns.montant >= sale_returns.GrandTotal THEN "paid"
                     WHEN payment_sale_returns.montant > 0 THEN "partial"
                     ELSE "unpaid"
                 END as payment_status'),
                 'payment_sale_returns.id'
-            );
+            )
+            ->groupBy('payment_sale_returns.id', 'payment_sale_returns.date', 'payment_sale_returns.Ref', 'payment_sale_returns.montant',
+                     'sale_returns.GrandTotal', 'products.name', 'payment_sale_returns.id');
 
         $purchaseReturnsQuery = PaymentPurchaseReturns::join('purchase_returns', 'payment_purchase_returns.purchase_return_id', '=', 'purchase_returns.id')
+            ->join('purchase_return_details', 'purchase_returns.id', '=', 'purchase_return_details.purchase_return_id')
+            ->join('products', 'purchase_return_details.product_id', '=', 'products.id')
             ->where('payment_purchase_returns.deleted_at', '=', null)
             ->where('purchase_returns.deleted_at', '=', null)
             ->where(function ($query) use ($ShowRecord) {
@@ -111,13 +128,16 @@ class PaymentReportController extends Controller
                 DB::raw("'purchase_returns' as payment_type"),
                 'payment_purchase_returns.montant',
                 'purchase_returns.GrandTotal',
+                'products.name as product_name',
                 DB::raw('CASE
                     WHEN payment_purchase_returns.montant >= purchase_returns.GrandTotal THEN "paid"
                     WHEN payment_purchase_returns.montant > 0 THEN "partial"
                     ELSE "unpaid"
                 END as payment_status'),
                 'payment_purchase_returns.id'
-            );
+            )
+            ->groupBy('payment_purchase_returns.id', 'payment_purchase_returns.date', 'payment_purchase_returns.Ref', 'payment_purchase_returns.montant',
+                     'purchase_returns.GrandTotal', 'products.name', 'payment_purchase_returns.id');
 
         // Apply date filters if provided
         if ($start_date && $end_date) {
