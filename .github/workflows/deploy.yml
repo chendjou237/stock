@@ -13,17 +13,13 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Add SSH Key
-      uses: webfactory/ssh-agent@v0.7.0
-      with:
-        ssh-private-key: ${{ secrets.HOSTINGER_KEY }}
-
     - name: Deploy to Hostinger
       env:
         HOSTINGER_HOST: ${{ secrets.HOSTINGER_HOST }}
         HOSTINGER_USER: ${{ secrets.HOSTINGER_USER }}
+        HOSTINGER_KEY: ${{ secrets.HOSTINGER_KEY }}
       run: |
-        ssh -o StrictHostKeyChecking=no $HOSTINGER_USER@$HOSTINGER_HOST '
+        ssh -o StrictHostKeyChecking=no -i $HOSTINGER_KEY $HOSTINGER_USER@$HOSTINGER_HOST '
         cd /domains/cmkdigitalinnovation.com/public_html/stockytest &&
         git pull origin main &&
         composer install --no-dev --prefer-dist --optimize-autoloader &&
