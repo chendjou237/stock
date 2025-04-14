@@ -37,7 +37,7 @@ jobs:
           AiMi9uS/0sgwf6b44wEpjiumsfzXOeqr4vplj9W1OQu6Veu0/f63Mz0CGgQeqQnM2vhpns
           zR3+6QyKFM4VKa9YHrURhALVsQYudxopCkGmjmqDMea0R33C0aSwalqOaqjUjONJknEXHF
           e/e5xdVdS9icI15r+KMmFHpH8PpJ3LXsY76Oeoz5VE+V0lQM+7Ok4vGdbEC40XHOd6jiSv
-          7XFLmNpJv+BzPunXWBkW+vdy8kHyEZ//dK1dta2fwaSLmeooRO3H8OuSfCuDuu67Y46zEx
+          7XFLmNpJv+bzPunXWBkW+vdy8kHyEZ//dK1dta2fwaSLmeooRO3H8OuSfCuDuu67Y46zEx
           EJ7cy9f7pYX4VOLeRXpeNHcdcI+WZCHwb/fLhgb9dzMjjqbnBKMaSXbiYggGqdFtNZqdWr
           CPk6p4xINb/KBL02yy3GJI6nmxeNBPB1Zjq738gLwNOVfMgNCxrrMx8EM0Wz6N9aKDUU5Q
           twSUI9uSQe9MtSOTktOcn/YB6/9ZCX43VTEiYBmwD4QrhXZ0cMh8tQR/htX/NZsKPjGzPh
@@ -64,12 +64,12 @@ jobs:
           EPLx6ExK4lAsg/UVk0xFFhmo3CpyOVAiysnH6UzxvknhZP75wYQHFMrES9PAozAff5U1bZ
           C2fddt11Y9Bo5Edx+4dOPhny14XUycj9CkkXAw4D6lFtSo9xXoculsif9tnzNEGQtJha6E
           YHIw1MTtMezE5NUukJ7lKJh+UB4hj9rP7FlPdq7JQmHMgIaWWZwiK2nCqBu61nx98zWxYS
-          +0TR0GTQY0f+P3SQto01tjpy+R2Wgib8mpRnpbz8J1zF6uTPIEAK+waamVz9VgT0hLX8/r
+          +0TR0GTQ0f+P3SQto01tjpy+R2Wgib8mpRnpbz8J1zF6uTPIEAK+waamVz9VgT0hLX8/r
           au6DhAad/ZI6oOFVI+XWZsjE0=
       run: |
         echo "$HOSTINGER_KEY" > /tmp/ssh_key
         chmod 600 /tmp/ssh_key
-        ssh -o StrictHostKeyChecking=no -i /tmp/ssh_key $HOSTINGER_USER@$HOSTINGER_HOST '
+        ssh -o StrictHostKeyChecking=no -i /tmp/ssh_key -p 65002 $HOSTINGER_USER@$HOSTINGER_HOST '
         cd /domains/cmkdigitalinnovation.com/public_html/stockytest &&
         git pull origin main &&
         composer install --no-dev --prefer-dist --optimize-autoloader &&
