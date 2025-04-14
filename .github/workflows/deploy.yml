@@ -1,0 +1,26 @@
+name: Deploy Laravel Application
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Deploy to Hostinger
+      env:
+        HOSTINGER_HOST: ${{ secrets.HOSTINGER_HOST }}
+        HOSTINGER_USER: ${{ secrets.HOSTINGER_USER }}
+        HOSTINGER_KEY: ${{ secrets.HOSTINGER_KEY }}
+      run: |
+        ssh -o StrictHostKeyChecking=no -i $HOSTINGER_KEY $HOSTINGER_USER@$HOSTINGER_HOST '
+        cd /domains/cmkdigitalinnovation.com/public_html/stockytest &&
+        git pull origin main &&
+        composer install --no-dev --prefer-dist --optimize-autoloader &&
+        php artisan migrate --force'
