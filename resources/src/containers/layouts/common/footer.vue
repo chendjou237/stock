@@ -16,7 +16,7 @@
           <div>
             <div>
               <p class="m-0">&copy; {{ new Date().getFullYear() }} {{$t('developed_by')}} {{currentUser.developed_by}}</p>
-              <p class="m-0">All rights reserved - CHENDJOU CHENDJOU HONORE</p>
+              <p class="m-0">All rights reserved - v4.0.81</p>
             </div>
           </div>
           <span class="flex-grow-1"></span>
@@ -25,7 +25,7 @@
       <!-- fotter end -->
     </div>
   </div>
-</template>
+</template> 
 <script>
 import { mapGetters, mapActions } from "vuex";
 
@@ -45,4 +45,4 @@ export default {
 
 
 <style lang="scss" scoped>
-</style>
+</style> 
