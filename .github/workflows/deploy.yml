@@ -72,5 +72,6 @@ jobs:
         ssh -o StrictHostKeyChecking=no -i /tmp/ssh_key -p 65002 $HOSTINGER_USER@$HOSTINGER_HOST '
         cd /domains/cmkdigitalinnovation.com/public_html/stockytest &&
         git pull origin main &&
-        composer install --no-dev --prefer-dist --optimize-autoloader &&
-        php artisan migrate --force'
+        docker-compose build &&
+        docker-compose up -d &&
+        docker-compose exec -T app php artisan migrate --force'
