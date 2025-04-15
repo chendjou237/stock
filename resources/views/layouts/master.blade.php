@@ -8,7 +8,7 @@
     <link rel=icon href=/images/favicon.ico>
     <link rel="stylesheet" href="/css/master.css">
 
-    <title>Stocky | Ultimate Inventory With POS</title>
+    <title>Stocky | Ultimate Inventory With POSS</title>
   </head>
 
   <body class="text-left">
