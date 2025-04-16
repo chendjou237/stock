@@ -497,7 +497,7 @@ components: { DateRangePicker },
     get_data_loaded() {
       var self = this;
       if (self.today_mode) {
-        let startDate = new Date("01/01/2000");  // Set start date to "01/01/2000"
+        let startDate = new Date("01/01/2024");  // Set start date to "01/01/2000"
         let endDate = new Date();  // Set end date to current date
 
         self.startDate = startDate.toISOString();

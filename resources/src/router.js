@@ -1,8 +1,10 @@
-import NProgress from "nprogress";
 import Vue from "vue";
-import Router from "vue-router";
-import { i18n } from "./plugins/i18n";
 import store from "./store";
+import { i18n } from "./plugins/i18n";
+import authenticate from "./auth/authenticate";
+import IsConnected from "./auth/IsConnected";
+import NProgress from "nprogress";
+import Router from "vue-router";
 Vue.use(Router);
 
 
@@ -27,9 +29,9 @@ const baseRoutes = [
                     import(
                         /* webpackChunkName: "dashboard" */ "./views/app/dashboard/dashboard"
                     )
-
+            
                 },
-
+               
             //Products
             {
                 path: "/app/products",
@@ -297,7 +299,7 @@ const baseRoutes = [
                     )
             },
 
-
+          
 
             //expenses
             {
@@ -803,11 +805,11 @@ const baseRoutes = [
                                         "./views/app/pages/hrm/leaves/leave_type"
                                     )
                             },
-
+                           
                         ]
                     },
 
-
+                    
                 ]
             },
 
@@ -940,7 +942,7 @@ const baseRoutes = [
                             )
                     },
 
-
+                    
 
                     // pos_settings
                     {
@@ -1031,7 +1033,7 @@ const baseRoutes = [
                                 /* webpackChunkName: "System_settings" */ "./views/app/pages/settings/system_settings"
                             )
                     }
-
+                  
                 ]
             },
 
@@ -1041,15 +1043,6 @@ const baseRoutes = [
                 component: () => import("./views/app/pages/reports"),
                 redirect: "/app/reports/profit_and_loss",
                 children: [
-                    {
-                        name: "all_payments",
-                        path: "all_payments",
-                        component: () =>
-                            import(
-                                /* webpackChunkName: "all_payments" */
-                                "./views/app/pages/reports/payments/all_payments"
-                            )
-                    },
                     {
                         name: "payments_purchases",
                         path: "payments_purchase",
