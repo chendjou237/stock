@@ -43,7 +43,7 @@ class PaymentSalesController extends BaseController
 
         // How many items do you want to display.
         $perPage = $request->limit;
-        $pageStart = \Request::get('page', 1);
+        $pageStart = $request->page;
         // Start displaying items from this number;
         $offSet = ($pageStart * $perPage) - $perPage;
         $order = $request->SortField;
@@ -57,7 +57,7 @@ class PaymentSalesController extends BaseController
         $data = array();
 
         // Check If User Has Permission View  All Records
-        $Payments = PaymentSale::with('sale.client','account')
+        $Payments = PaymentSale::with('sale.client','account', 'sale.details.product')
             ->where('deleted_at', '=', null)
             ->whereBetween('date', array($request->from, $request->to))
             ->where(function ($query) use ($view_records) {
@@ -71,6 +71,8 @@ class PaymentSalesController extends BaseController
                     return $query->whereHas('sale.client', function ($q) use ($request) {
                         $q->where('id', '=', $request->client_id);
                     });
+                })->when($request->filled('account_id'), function ($query) use ($request) {
+                    return $query->where('account_id', '=', $request->account_id);
                 });
             });
         $Filtred = $helpers->filter($Payments, $columns, $param, $request)
@@ -111,17 +113,22 @@ class PaymentSalesController extends BaseController
             $item['Reglement']     = $Payment->Reglement;
             $item['montant']       = $Payment->montant;
             $item['account_name']  = $Payment['account']?$Payment['account']->account_name:'---';
+            $item['product_names'] = $Payment['sale']->details->map(function($detail) {
+                return $detail->product->name;
+            })->implode(', ');
             $data[] = $item;
         }
 
         $clients = Client::where('deleted_at', '=', null)->get(['id', 'name']);
         $sales = Sale::get(['Ref', 'id']);
+        $accounts = Account::where('deleted_at', '=', null)->get(['id', 'account_name']);
 
         return response()->json([
             'totalRows' => $totalRows,
             'payments' => $data,
             'sales' => $sales,
             'clients' => $clients,
+            'accounts' => $accounts,
         ]);
 
     }
@@ -158,7 +165,8 @@ class PaymentSalesController extends BaseController
                 }
 
                 if($request['montant'] > 0){
-                    if ($request['Reglement'] == 'credit card') {
+                  //   if ($request['Reglement'] == 'credit card') {
+                    if (false) {
                         $Client = Client::whereId($sale->client_id)->first();
                         Stripe\Stripe::setApiKey(config('app.STRIPE_SECRET'));
 
@@ -227,7 +235,7 @@ class PaymentSalesController extends BaseController
                         $PaymentSale->date      = Carbon::now();
                         $PaymentSale->account_id = $request['account_id']?$request['account_id']:NULL;
                         $PaymentSale->Reglement = $request['Reglement'];
-                        $PaymentSale->montant   = $request['montant'];
+                     $PaymentSale->montant   = $request['montant'];
                         $PaymentSale->change    = $request['change'];
                         $PaymentSale->notes     = $request['notes'];
                         $PaymentSale->user_id   = Auth::user()->id;
@@ -254,12 +262,14 @@ class PaymentSalesController extends BaseController
                         PaymentWithCreditCard::create($PaymentCard);
 
                         // Paying Method Cash
-                    } else {
+                    }
+
+                    else {
 
                         PaymentSale::create([
                             'sale_id'   => $sale->id,
                             'Ref'       => app('App\Http\Controllers\PaymentSalesController')->getNumberOrder(),
-                            'date'      => Carbon::now(),
+                            'date'      => Carbon::parse($request['date'])->format('Y-m-d'),
                             'account_id' => $request['account_id']?$request['account_id']:NULL,
                             'Reglement' => $request['Reglement'],
                             'montant'   => $request['montant'],
@@ -299,7 +309,7 @@ class PaymentSalesController extends BaseController
 
     public function show($id){
     //
-        
+
     }
 
     //----------- Update Payments Sale --------------\\
@@ -372,7 +382,7 @@ class PaymentSalesController extends BaseController
                         'payment_statut' => $payment_statut,
                     ]);
 
-                } 
+                }
 
             } catch (Exception $e) {
                 return response()->json(['message' => $e->getMessage()], 500);
@@ -423,7 +433,7 @@ class PaymentSalesController extends BaseController
                     \Stripe\Refund::create([
                         'charge' => $PaymentWithCreditCard->charge_id,
                     ]);
-    
+
                     $PaymentWithCreditCard->delete();
                 }
             }
@@ -529,7 +539,7 @@ class PaymentSalesController extends BaseController
 
         //settings
         $settings = Setting::where('deleted_at', '=', null)->first();
-    
+
         //the custom msg of payment_received
         $emailMessage  = EmailMessage::where('name', 'payment_received')->first();
 
@@ -540,12 +550,12 @@ class PaymentSalesController extends BaseController
             $message_body = '';
             $message_subject = '';
         }
-    
-        
+
+
         $payment_number = $payment->Ref;
 
         $total_amount = $currency .' '.number_format($payment->montant, 2, '.', ',');
-    
+
         $contact_name = $payment['sale']['client']->name;
         $business_name = $settings->CompanyName;
 
@@ -562,16 +572,16 @@ class PaymentSalesController extends BaseController
         $email['body'] = $message_body;
         $email['company_name'] = $business_name;
 
-        $this->Set_config_mail(); 
+        $this->Set_config_mail();
 
         $mail = Mail::to($receiver_email)->send(new CustomEmail($email));
 
         return $mail;
     }
-   
- 
-   
-   
+
+
+
+
     //-------------------Sms Notifications -----------------\\
 
     public function Send_SMS(Request $request)
@@ -583,7 +593,7 @@ class PaymentSalesController extends BaseController
 
         //settings
         $settings = Setting::where('deleted_at', '=', null)->first();
-        
+
         $default_sms_gateway = sms_gateway::where('id' , $settings->sms_gateway)
          ->where('deleted_at', '=', null)->first();
 
@@ -598,14 +608,14 @@ class PaymentSalesController extends BaseController
         }else{
             $message_text = '';
         }
-        
+
         $payment_number = $payment->Ref;
 
         $total_amount = $currency .' '.number_format($payment->montant, 2, '.', ',');
-        
+
         $contact_name = $payment['sale']['client']->name;
         $business_name = $settings->CompanyName;
-    
+
         //receiver phone
         $receiverNumber = $payment['sale']['client']->phone;
 
@@ -618,16 +628,16 @@ class PaymentSalesController extends BaseController
         //twilio
         if($default_sms_gateway->title == "twilio"){
             try {
-    
+
                 $account_sid = env("TWILIO_SID");
                 $auth_token = env("TWILIO_TOKEN");
                 $twilio_number = env("TWILIO_FROM");
-    
+
                 $client = new Client_Twilio($account_sid, $auth_token);
                 $client->messages->create($receiverNumber, [
-                    'from' => $twilio_number, 
+                    'from' => $twilio_number,
                     'body' => $message_text]);
-        
+
             } catch (Exception $e) {
                 return response()->json(['message' => $e->getMessage()], 500);
             }
@@ -639,13 +649,13 @@ class PaymentSalesController extends BaseController
         //         $basic  = new \Nexmo\Client\Credentials\Basic(env("NEXMO_KEY"), env("NEXMO_SECRET"));
         //         $client = new \Nexmo\Client($basic);
         //         $nexmo_from = env("NEXMO_FROM");
-        
+
         //         $message = $client->message()->send([
         //             'to' => $receiverNumber,
         //             'from' => $nexmo_from,
         //             'text' => $message_text
         //         ]);
-                        
+
         //     } catch (Exception $e) {
         //         return response()->json(['message' => $e->getMessage()], 500);
         //     }
@@ -662,25 +672,25 @@ class PaymentSalesController extends BaseController
                 ->setHost($BASE_URL)
                 ->setApiKeyPrefix('Authorization', 'App')
                 ->setApiKey('Authorization', $API_KEY);
-            
+
             $client = new Client_guzzle();
-            
+
             $sendSmsApi = new SendSMSApi($client, $configuration);
             $destination = (new SmsDestination())->setTo($receiverNumber);
             $message = (new SmsTextualMessage())
                 ->setFrom($SENDER)
                 ->setText($message_text)
                 ->setDestinations([$destination]);
-                
+
             $request = (new SmsAdvancedTextualRequest())->setMessages([$message]);
-            
+
             try {
                 $smsResponse = $sendSmsApi->sendSmsMessage($request);
                 echo ("Response body: " . $smsResponse);
             } catch (Throwable $apiException) {
                 echo("HTTP Code: " . $apiException->getCode() . "\n");
             }
-            
+
         }
 
         return response()->json(['success' => true]);

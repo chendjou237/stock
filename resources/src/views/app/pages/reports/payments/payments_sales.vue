@@ -5,16 +5,16 @@
     <div v-if="isLoading" class="loading_page spinner spinner-primary mr-3"></div>
 
       <b-col md="12" class="text-center" v-if="!isLoading">
-        <date-range-picker 
-          v-model="dateRange" 
-          :startDate="startDate" 
-          :endDate="endDate" 
+        <date-range-picker
+          v-model="dateRange"
+          :startDate="startDate"
+          :endDate="endDate"
            @update="Submit_filter_dateRange"
-          :locale-data="locale" > 
+          :locale-data="locale" >
 
           <template v-slot:input="picker" style="min-width: 350px;">
               {{ picker.startDate.toJSON().slice(0, 10)}} - {{ picker.endDate.toJSON().slice(0, 10)}}
-          </template>        
+          </template>
         </date-range-picker>
       </b-col>
 
@@ -122,6 +122,18 @@
             </b-form-group>
           </b-col>
 
+          <!-- Account -->
+          <b-col md="12">
+            <b-form-group :label="$t('Account')">
+              <v-select
+                :reduce="label => label.value"
+                :placeholder="$t('Choose_Account')"
+                v-model="Filter_account"
+                :options="accounts.map(accounts => ({label: accounts.account_name, value: accounts.id}))"
+              />
+            </b-form-group>
+          </b-col>
+
           <b-col md="6" sm="12">
             <b-button
               @click="Payments_Sales(serverParams.page)"
@@ -147,13 +159,13 @@
 
 
 <script>
-import NProgress from "nprogress";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
-import DateRangePicker from 'vue2-daterange-picker'
+import NProgress from "nprogress";
+import DateRangePicker from 'vue2-daterange-picker';
 //you need to import the CSS manually
-import 'vue2-daterange-picker/dist/vue2-daterange-picker.css'
-import moment from 'moment'
+import moment from 'moment';
+import 'vue2-daterange-picker/dist/vue2-daterange-picker.css';
 
 export default {
   metaInfo: {
@@ -179,32 +191,34 @@ export default {
       Filter_Ref: "",
       Filter_sale: "",
       Filter_Reg: "",
+      Filter_account: "",
       payments: [],
       clients: [],
+      accounts: [],
       rows: [{
           Reglement: 'Total',
-         
+
           children: [
-             
+
           ],
       },],
       sales: [],
       today_mode: true,
-      startDate: "", 
-      endDate: "", 
-      dateRange: { 
-       startDate: "", 
-       endDate: "" 
-      }, 
-      locale:{ 
+      startDate: "",
+      endDate: "",
+      dateRange: {
+       startDate: "",
+       endDate: ""
+      },
+      locale:{
           //separator between the two ranges apply
-          Label: "Apply", 
-          cancelLabel: "Cancel", 
-          weekLabel: "W", 
-          customRangeLabel: "Custom Range", 
-          daysOfWeek: moment.weekdaysMin(), 
-          //array of days - see moment documenations for details 
-          monthNames: moment.monthsShort(), //array of month names - see moment documenations for details 
+          Label: "Apply",
+          cancelLabel: "Cancel",
+          weekLabel: "W",
+          customRangeLabel: "Custom Range",
+          daysOfWeek: moment.weekdaysMin(),
+          //array of days - see moment documenations for details
+          monthNames: moment.monthsShort(), //array of month names - see moment documenations for details
           firstDay: 1 //ISO first day of week - see moment documenations for details
         },
     };
@@ -220,11 +234,18 @@ export default {
           thClass: "text-left"
         },
         {
-          label: this.$t("Reference"),
-          field: "Ref",
+          label: this.$t("Products"),
+          field: "product_names",
           tdClass: "text-left",
-          thClass: "text-left"
+          thClass: "text-left",
+          sortable: false
         },
+      //   {
+      //     label: this.$t("Reference"),
+      //     field: "Ref",
+      //     tdClass: "text-left",
+      //     thClass: "text-left"
+      //   },
         {
           label: this.$t("Sale"),
           field: "Ref_Sale",
@@ -257,14 +278,15 @@ export default {
           headerField: this.sumCount,
           tdClass: "text-left",
           thClass: "text-left"
-        }
+        },
+
       ];
     }
   },
   methods: {
 
     sumCount(rowObj) {
-     
+
     	let sum = 0;
       for (let i = 0; i < rowObj.children.length; i++) {
         sum += rowObj.children[i].montant;
@@ -325,6 +347,7 @@ export default {
       this.Filter_Ref = "";
       this.Filter_sale = "";
       this.Filter_Reg = "";
+      this.Filter_account = "";
       this.Payments_Sales(this.serverParams.page);
     },
 
@@ -355,7 +378,7 @@ export default {
 
         // Calculate totals
      let totalGrandTotal = self.payments.reduce((sum, payment) => sum + parseFloat(payment.montant || 0), 0);
-     
+
      let footer = [{
        date: 'Total',
        Ref: '',
@@ -364,7 +387,7 @@ export default {
        Reglement: '',
        account_name: '',
        montant: `${totalGrandTotal.toFixed(2)}`,
-      
+
      }];
 
 
@@ -374,7 +397,7 @@ export default {
        foot: footer,
        startY: 70,
        didDrawPage: (data) => {
-         pdf.text("Payments Sales", 40, 25);        
+         pdf.text("Payments Sales", 40, 25);
        }
      });
 
@@ -401,7 +424,7 @@ export default {
 
         self.dateRange.startDate = today.getFullYear();
         self.dateRange.endDate = new Date().toJSON().slice(0, 10);
-        
+
       }
     },
 
@@ -425,6 +448,8 @@ export default {
             this.Filter_sale +
             "&Reglement=" +
             this.Filter_Reg +
+            "&account_id=" +
+            this.Filter_account +
             "&SortField=" +
             this.serverParams.sort.field +
             "&SortType=" +
@@ -443,6 +468,7 @@ export default {
           this.payments = response.data.payments;
           this.clients = response.data.clients;
           this.sales = response.data.sales;
+          this.accounts = response.data.accounts;
           this.totalRows = response.data.totalRows;
           this.rows[0].children = this.payments;
           // Complete the animation of theprogress bar.
