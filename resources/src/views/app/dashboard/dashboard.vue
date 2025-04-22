@@ -18,16 +18,16 @@
         </b-col>
 
       <b-col lg="4" md="4" sm="12">
-        <date-range-picker 
-          v-model="dateRange" 
-          :startDate="startDate" 
-          :endDate="endDate" 
+        <date-range-picker
+          v-model="dateRange"
+          :startDate="startDate"
+          :endDate="endDate"
            @update="Submit_filter_dateRange"
-          :locale-data="locale" > 
+          :locale-data="locale" >
 
           <template v-slot:input="picker" style="min-width: 350px;">
               {{ picker.startDate.toJSON().slice(0, 10)}} - {{ picker.endDate.toJSON().slice(0, 10)}}
-          </template>        
+          </template>
         </date-range-picker>
       </b-col>
 
@@ -236,7 +236,7 @@
     </div>
 
   </div>
-  
+
   <!-- ============ Body content End ============= -->
 </template>
 <script>
@@ -266,21 +266,21 @@ export default {
   },
   data() {
     return {
-      startDate: "", 
-     endDate: "", 
-     dateRange: { 
-       startDate: "", 
-       endDate: "" 
-     }, 
-      locale:{ 
+      startDate: "",
+     endDate: "",
+     dateRange: {
+       startDate: "",
+       endDate: ""
+     },
+      locale:{
           //separator between the two ranges apply
-          Label: "Apply", 
-          cancelLabel: "Cancel", 
-          weekLabel: "W", 
-          customRangeLabel: "Custom Range", 
-          daysOfWeek: moment.weekdaysMin(), 
-          //array of days - see moment documenations for details 
-          monthNames: moment.monthsShort(), //array of month names - see moment documenations for details 
+          Label: "Apply",
+          cancelLabel: "Cancel",
+          weekLabel: "W",
+          customRangeLabel: "Custom Range",
+          daysOfWeek: moment.weekdaysMin(),
+          //array of days - see moment documenations for details
+          monthNames: moment.monthsShort(), //array of month names - see moment documenations for details
           firstDay: 1 //ISO first day of week - see moment documenations for details
         },
         today_mode: true,
@@ -451,7 +451,7 @@ export default {
       var self = this;
       if (self.today_mode) {
         let today = new Date();
-        
+
         // Get the date in YYYY-MM-DD format
         let formattedDate = today.toISOString().split('T')[0];
 

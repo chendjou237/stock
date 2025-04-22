@@ -5,16 +5,16 @@
 
     <b-row v-if="!isLoading">
       <b-col md="12" class="text-center">
-        <date-range-picker 
-          v-model="dateRange" 
-          :startDate="startDate" 
-          :endDate="endDate" 
+        <date-range-picker
+          v-model="dateRange"
+          :startDate="startDate"
+          :endDate="endDate"
            @update="Submit_filter_dateRange"
-          :locale-data="locale" > 
+          :locale-data="locale" >
 
           <template v-slot:input="picker" style="min-width: 350px;">
               {{ picker.startDate.toJSON().slice(0, 10)}} - {{ picker.endDate.toJSON().slice(0, 10)}}
-          </template>        
+          </template>
         </date-range-picker>
       </b-col>
 
@@ -138,7 +138,7 @@
                       class="bold"
                     >{{currentUser.currency}} {{infos.returns_sales_sum}}</span>
                     {{$t('SalesReturn')}})
-              
+
                   </p>
                 </div>
               </div>
@@ -167,7 +167,7 @@
                       class="bold"
                     >{{currentUser.currency}} {{infos.product_cost_fifo}}</span>
                     {{$t('Product_Cost')}})
-              
+
                   </p>
                 </div>
               </div>
@@ -196,7 +196,7 @@
                       class="bold"
                     >{{currentUser.currency}} {{infos.averagecost}}</span>
                     {{$t('Product_Cost')}})
-              
+
                   </p>
                 </div>
               </div>
@@ -264,7 +264,7 @@
             </b-col>
             <!-- /.col -->
 
-            <!-- /.Paiements Net -->
+            <!-- /.Daily Profit -->
             <b-col md="4" sm="12">
               <div class="card card-icon text-center mb-30">
                 <div class="card-body">
@@ -296,23 +296,23 @@
               <div class="card card-icon text-center mb-30">
                 <div class="card-body">
                   <i class="i-Data-Upload"></i>
-                  <p class="text-muted mt-2 mb-2">{{$t('PaiementsNet')}}</p>
+                  <p class="text-muted mt-2 mb-2">Daily Profit</p>
                   <p
                     class="text-primary text-24 line-height-1 m-0"
-                  >{{currentUser.currency}} {{infos.paiement_net}}</p>
+                  >{{currentUser.currency}} {{infos.daily_profit}}</p>
                 </div>
                 <div class="card-footer">
                   <p>
                     (
                     <span
                       class="bold"
-                    >{{currentUser.currency}} {{infos.payment_received}}</span>
-                    {{$t('Recieved')}}
+                    >{{currentUser.currency}} {{infos.daily_payment_received}}</span>
+                    {{$t('Daily Sales Payment')}}
                     -
                     <span
                       class="bold"
-                    >{{currentUser.currency}} {{infos.payment_sent}}</span>
-                    {{$t('Sent')}})
+                    >{{currentUser.currency}} {{infos.daily_expenses}}</span>
+                    {{$t('Daily Expenses')}})
                   </p>
                 </div>
               </div>
@@ -345,21 +345,21 @@ export default {
       isLoading: true,
       infos: [],
       today_mode: true,
-      startDate: "", 
-      endDate: "", 
-      dateRange: { 
-       startDate: "", 
-       endDate: "" 
-      }, 
-      locale:{ 
+      startDate: "",
+      endDate: "",
+      dateRange: {
+       startDate: "",
+       endDate: ""
+      },
+      locale:{
           //separator between the two ranges apply
-          Label: "Apply", 
-          cancelLabel: "Cancel", 
-          weekLabel: "W", 
-          customRangeLabel: "Custom Range", 
-          daysOfWeek: moment.weekdaysMin(), 
-          //array of days - see moment documenations for details 
-          monthNames: moment.monthsShort(), //array of month names - see moment documenations for details 
+          Label: "Apply",
+          cancelLabel: "Cancel",
+          weekLabel: "W",
+          customRangeLabel: "Custom Range",
+          daysOfWeek: moment.weekdaysMin(),
+          //array of days - see moment documenations for details
+          monthNames: moment.monthsShort(), //array of month names - see moment documenations for details
           firstDay: 1 //ISO first day of week - see moment documenations for details
         },
     };
@@ -384,7 +384,7 @@ export default {
       return `${value[0]}.${formated}`;
     },
 
- 
+
     //----------------------------- Submit Date Picker -------------------\\
     Submit_filter_dateRange() {
       var self = this;
@@ -430,12 +430,15 @@ export default {
             "&from=" +
             this.startDate +
             "&warehouse_id=" +
-            this.warehouse_id 
+            this.warehouse_id
         )
         .then(response => {
+          console.log('Daily Payment Received:', response.data.data);
+          console.log('Daily Expenses:', response.data.data);
+          console.log('Daily Profit:', response.data.data);
           this.infos = response.data.data;
           this.warehouses = response.data.warehouses;
-          
+
           // Complete the animation of theprogress bar.
           NProgress.done();
            this.isLoading = false;
@@ -451,7 +454,7 @@ export default {
         });
     },
 
-  
+
   }, //end Methods
 
   //-----------------------------Autoload function-------------------\\
