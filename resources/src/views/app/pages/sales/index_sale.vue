@@ -16,7 +16,7 @@
         placeholder: $t('Search_this_table'),
         enabled: true,
       }"
-        :select-options="{ 
+        :select-options="{
           enabled: true ,
           clearSelectionText: '',
         }"
@@ -86,7 +86,7 @@
                   </b-dropdown-item>
                 </b-navbar-nav>
 
-                 <b-dropdown-item 
+                 <b-dropdown-item
                   title="Edit"
                   v-if="currentUserPermissions.includes('Sales_edit') && props.row.sale_has_return == 'no'"
                   :to="'/app/sales/edit/'+props.row.id"
@@ -227,7 +227,7 @@
                 <span class="ul-btn__text ml-1">{{props.row.Ref}}</span>
               </router-link> <br>
               <small v-if="props.row.sale_has_return == 'yes'"><i class="text-15 text-danger i-Back"></i></small>
-              
+
             </div>
         </template>
       </vue-good-table>
@@ -484,7 +484,7 @@
                           {label: 'cheque', value: 'cheque'},
                           {label: 'Western Union', value: 'Western Union'},
                           {label: 'bank transfer', value: 'bank transfer'},
-                          {label: 'other', value: 'other'},
+                          {label: 'mtn momo and orange money', value: 'other'},
                           ]"
                   ></v-select>
                   <b-form-invalid-feedback>{{ errors[0] }}</b-form-invalid-feedback>
@@ -580,11 +580,11 @@
                         <td>
                             <b-button variant="outline-primary" @click="selectCard(card)" v-if="!isSelectedCard(card) && card_id != card.card_id">
                               <span>
-                                <i class="i-Drag-Up"></i> 
+                                <i class="i-Drag-Up"></i>
                                 Use This
                               </span>
                             </b-button>
-                              <i v-if="isSelectedCard(card) || card_id == card.card_id" class="i-Yes" style=" font-size: 20px; "></i> 
+                              <i v-if="isSelectedCard(card) || card_id == card.card_id" class="i-Yes" style=" font-size: 20px; "></i>
                         </td>
                       </tr>
                     </tbody>
@@ -1103,7 +1103,7 @@ export default {
                 this.submit_showing_credit_card = false;
             });
 
-         
+
         }else{
           this.hasSavedPaymentMethod = false;
           this.useSavedPaymentMethod = false;
@@ -1160,7 +1160,7 @@ export default {
       a.document.write(divContents);
       a.document.write("</body></html>");
       a.document.close();
-      
+
       setTimeout(() => {
          a.print();
       }, 1000);
@@ -1218,7 +1218,7 @@ export default {
       this.Get_Sales(this.serverParams.page);
     },
 
-    
+
     onSearch(value) {
       this.search = value.searchTerm;
       this.Get_Sales(this.serverParams.page);
@@ -1236,7 +1236,7 @@ export default {
           this.$t("Warning")
         );
         this.payment.montant = 0;
-      } 
+      }
       else if (this.payment.montant > this.due) {
         this.makeToast(
           "warning",
@@ -1252,7 +1252,7 @@ export default {
     Verified_Received_Amount() {
       if (isNaN(this.payment.received_amount)) {
         this.payment.received_amount = 0;
-      } 
+      }
     },
 
 
@@ -1366,12 +1366,12 @@ export default {
         foot: footer,
         startY: 70,
         didDrawPage: (data) => {
-          pdf.text("Sales List", 40, 25);        
+          pdf.text("Sales List", 40, 25);
         }
       });
 
       pdf.save("Sales_List.pdf");
-     
+
     },
     //-------------------------------- Invoice POS ------------------------------\\
     Invoice_POS(id) {
@@ -1453,7 +1453,7 @@ export default {
 
           // Open the WhatsApp URL in a new window
           window.open(whatsappUrl, '_blank');
-          
+
         })
         .catch(error => {
           // Complete the animation of the  progress bar.
@@ -1467,7 +1467,7 @@ export default {
       // Start the progress bar.
       NProgress.start();
       NProgress.set(0.1);
-     
+
       axios
         .get("payment_sale_pdf/" + id, {
           responseType: "blob", // important
@@ -1591,7 +1591,7 @@ export default {
       axios
         .post("payment_sale_send_email", {
           id: id,
-         
+
         })
         .then(response => {
           // Complete the animation of the  progress bar.
@@ -1719,7 +1719,7 @@ export default {
         NProgress.done();
         this.$bvModal.show("Add_Payment");
       }, 1000);
-     
+
     },
     //-------------------------------Show All Payment with Sale ---------------------\\
     Show_Payments(id, sale) {
@@ -1825,7 +1825,7 @@ export default {
       this.paymentProcessing = true;
       NProgress.start();
       NProgress.set(0.1);
-      
+
         axios
           .put("payment_sale/" + this.payment.id, {
             sale_id: this.sale.id,
@@ -1938,7 +1938,7 @@ export default {
             })
             .catch(error => {
               NProgress.done();
-                
+
             });
     },
 

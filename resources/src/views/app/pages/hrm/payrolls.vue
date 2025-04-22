@@ -14,9 +14,9 @@
         @on-search="onSearch"
         :search-options="{
         enabled: true,
-        placeholder: $t('Search_this_table'),  
+        placeholder: $t('Search_this_table'),
       }"
-       
+
         :pagination-options="{
         enabled: true,
         mode: 'records',
@@ -62,7 +62,7 @@
       <b-modal hide-footer size="md" id="Modal_New_Payroll" :title="editmode?$t('Edit'):$t('Add')">
         <b-form @submit.prevent="Submit_Payroll">
           <b-row>
-            
+
               <!-- date -->
               <b-col md="12">
                 <validation-provider
@@ -71,7 +71,7 @@
                   v-slot="validationContext"
                 >
                     <b-form-group :label="$t('date') + ' ' + '*'">
-                        <Datepicker id="date" name="date" :placeholder="$t('date')" v-model="payroll.date" 
+                        <Datepicker id="date" name="date" :placeholder="$t('date')" v-model="payroll.date"
                             input-class="form-control back_important" format="yyyy-MM-dd"  @closed="payroll.date=formatDate(payroll.date)">
                         </Datepicker>
                         <b-form-invalid-feedback id="date-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
@@ -157,7 +157,7 @@
                           {label: 'cheque', value: 'cheque'},
                           {label: 'Western Union', value: 'Western Union'},
                           {label: 'bank transfer', value: 'bank transfer'},
-                          {label: 'other', value: 'other'},
+                          {label: 'mtn momo and orange money', value: 'other'},
                           ]"
                   ></v-select>
                   <b-form-invalid-feedback>{{ errors[0] }}</b-form-invalid-feedback>
@@ -210,14 +210,14 @@ export default {
       editmode: false,
       employees:[],
       accounrs:[],
-      payrolls: {}, 
+      payrolls: {},
       payroll: {
         date: new Date().toISOString().slice(0, 10),
         employee_id:"",
         account_id:"",
         amount:"",
         payment_method:"",
-      }, 
+      },
     };
   },
 
@@ -289,13 +289,13 @@ export default {
 
   methods: {
 
-    
+
     //---------- keyup Received Amount
 
     Verified_paidAmount() {
       if (isNaN(this.payroll.amount)) {
         this.payroll.amount = 0;
-      } 
+      }
     },
 
     //---- update Params Table
@@ -328,7 +328,7 @@ export default {
       });
     },
 
-    
+
 
     //---- Event Search
     onSearch(value) {
@@ -348,7 +348,7 @@ export default {
         var d2 = d1 < 10 ? '0' + d1 : d1;
         return [d.getFullYear(), m2, d2].join('-');
     },
-  
+
 
     //------------- Submit Validation
     Submit_Payroll() {
@@ -393,7 +393,7 @@ export default {
         this.$bvModal.show("Modal_New_Payroll");
     },
 
-   
+
     Selected_Account(value) {
         if (value === null) {
             this.payroll.account_id = "";
@@ -448,7 +448,7 @@ export default {
 
     //------------------------------- Create payroll ------------------------\\
     Create_Payroll() {
-      
+
         var self = this;
         self.SubmitProcessing = true;
         axios.post("/payroll", {
@@ -546,7 +546,7 @@ export default {
       });
     },
 
-  
+
   },
 
   //----------------------------- Created function-------------------\\

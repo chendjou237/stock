@@ -15,15 +15,15 @@
               <div class="mx-auto"></div>
 
               <div class="header-part-right">
-               
+
                  <!-- Dashboard -->
-                 <router-link 
+                 <router-link
                   class="i-Back header-icon d-sm-inline-block"
                   to="/app/dashboard"
                   title="Dashboard"
                 >
                 </router-link>
-            
+
                  <!-- Full screen toggle -->
                  <i
                   style="color: #8b5cf6;"
@@ -33,7 +33,7 @@
                 ></i>
 
                 <!-- Pos Settings -->
-                <router-link 
+                <router-link
                   v-if="currentUserPermissions && currentUserPermissions.includes('pos_settings')"
                   class="i-Data-Settings header-icon d-sm-inline-block"
                   to="/app/settings/pos_settings"
@@ -146,7 +146,7 @@
                 <i title="sa" class="flag-icon flag-icon-squared flag-icon-kr"></i>
                 <span class="title-lang">Korean</span>
               </a>
-             
+
               <a @click="SetLocal('ba')">
                 <i title="sa" class="flag-icon flag-icon-squared flag-icon-bd"></i>
                 <span class="title-lang">Bangla</span>
@@ -208,8 +208,8 @@
 
                     <b-modal hide-footer id="open_scan" size="md" title="Barcode Scanner">
                       <qrcode-scanner
-                        :qrbox="250" 
-                        :fps="10" 
+                        :qrbox="250"
+                        :fps="10"
                         style="width: 100%; height: calc(100vh - 56px);"
                         @result="onScan"
                       />
@@ -283,7 +283,7 @@
                                   <span>{{detail.code}}</span>
                                   <br>
                                   <span class="badge badge-success">{{detail.name}}</span>
-                                  <i v-if="currentUserPermissions && currentUserPermissions.includes('edit_product_sale')" 
+                                  <i v-if="currentUserPermissions && currentUserPermissions.includes('edit_product_sale')"
                                     @click="Modal_Updat_Detail(detail)" class="i-Edit text-success cursor-pointer"></i>
                                 </td>
                                 <td>{{currentUser.currency}} {{formatNumber(detail.Total_price, 2)}}</td>
@@ -429,10 +429,10 @@
                     </b-row>
                   </div>
 
-                
+
                 </b-card-body>
 
-                
+
               </b-form>
             </validation-observer>
 
@@ -608,13 +608,13 @@
 
               <!-- Product -->
               <b-col md="12" class="mt-2 mb-2">
-                 
+
                   <div id="autocomplete" class="autocomplete">
                     <div class="input-with-icon">
                       <img src="/assets_setup/scan.png" alt="Scan" class="scan-icon" @click="showModal">
-                    <input 
+                    <input
                      :placeholder="$t('Scan_Search_Product_by_Code_Name')"
-                      @input='e => search_input = e.target.value' 
+                      @input='e => search_input = e.target.value'
                       @keyup="search(search_input)"
                       @focus="handleFocus"
                       @blur="handleBlur"
@@ -734,9 +734,9 @@
             </b-col>
           </b-row>
 
-         
+
         </b-modal>
-       
+
         <!-- Sidebar Brand -->
         <b-sidebar id="sidebar-brand" :title="$t('ListofBrand')" bg-variant="white" right shadow>
           <div class="px-3 py-2">
@@ -837,7 +837,7 @@
                   :class="{ 'brand-Active' : category_id == ''}"
                   class="card bd-highlight m-1"
                 >
-                 
+
                   <div class="flex-grow-1 d-bock" style=" cursor: pointer; ">
                     <div
                       class="card-body align-self-center flex-column justify-content-between align-items-lg-center"
@@ -1077,7 +1077,7 @@
                       >{{parseFloat(payment.received_amount - payment.amount).toFixed(2)}}</p>
                     </b-col>
 
-                    
+
                   </b-row>
                 </b-col>
                  <b-col md="6">
@@ -1119,7 +1119,7 @@
                 </b-col>
               </b-row>
               <b-row class="mt-4">
-               
+
                   <!-- Payment choice -->
                   <b-col lg="6" md="6" sm="12">
                     <validation-provider name="Payment choice" :rules="{ required: true}">
@@ -1139,7 +1139,7 @@
                             {label: 'cheque', value: 'cheque'},
                             {label: 'Western Union', value: 'Western Union'},
                             {label: 'bank transfer', value: 'bank transfer'},
-                            {label: 'other', value: 'other'},
+                            {label: 'mtn momo and orange money', value: 'other'},
                             ]"
                         ></v-select>
                         <b-form-invalid-feedback>{{ errors[0] }}</b-form-invalid-feedback>
@@ -1198,11 +1198,11 @@
                                 <td>
                                    <b-button variant="outline-primary" @click="selectCard(card)" v-if="!isSelectedCard(card) && card_id != card.card_id">
                                       <span>
-                                        <i class="i-Drag-Up"></i> 
+                                        <i class="i-Drag-Up"></i>
                                         Use This
                                       </span>
                                     </b-button>
-                                     <i v-if="isSelectedCard(card) || card_id == card.card_id" class="i-Yes" style=" font-size: 20px; "></i> 
+                                     <i v-if="isSelectedCard(card) || card_id == card.card_id" class="i-Yes" style=" font-size: 20px; "></i>
                                 </td>
                               </tr>
                             </tbody>
@@ -1227,7 +1227,7 @@
                         </div>
                      </b-card>
                   </b-col>
-               
+
 
 
                     <!-- payment Note -->
@@ -1386,7 +1386,7 @@
           :rows="draft_sales"
           @on-page-change="onPageChange"
           @on-per-page-change="onPerPageChange"
-        
+
           :pagination-options="{
             enabled: true,
             mode: 'records',
@@ -1396,10 +1396,10 @@
           styleClass="tableOne table-hover vgt-table"
         >
 
-        
+
         <template slot="table-row" slot-scope="props">
           <span v-if="props.column.field == 'actions'">
-          
+
             <router-link
               v-b-tooltip.hover
               title="Edit"
@@ -1415,9 +1415,9 @@
               <i class="i-Close-Window text-25 text-danger"></i>
             </a>
           </span>
-         
+
         </template>
-      
+
       </vue-good-table>
 
        </b-modal>
@@ -1726,7 +1726,7 @@ export default {
           thClass: "text-left",
           sortable: false
         },
-       
+
         {
           label: this.$t("Total"),
           field: "GrandTotal",
@@ -1743,11 +1743,11 @@ export default {
           thClass: "text-right",
           sortable: false
         }
-     
+
       ];
     }
 
-    
+
 
   },
   mounted() {
@@ -1760,7 +1760,7 @@ export default {
     logoutUser() {
       this.$store.dispatch("logout");
     },
-    
+
      handleFocus() {
       this.focused = true
     },
@@ -1768,10 +1768,10 @@ export default {
       this.focused = false
     },
 
-    
+
     showModal() {
       this.$bvModal.show('open_scan');
-      
+
     },
 
     onScan (decodedText, decodedResult) {
@@ -1813,7 +1813,7 @@ export default {
                 this.submit_showing_credit_card = false;
             });
 
-         
+
         }else{
           this.hasSavedPaymentMethod = false;
           this.useSavedPaymentMethod = false;
@@ -2062,7 +2062,7 @@ export default {
             this.totalRows_draft_sales = response.data.totalRows;
 
             NProgress.done();
-            
+
         })
         .catch(response => {
           NProgress.done();
@@ -2112,7 +2112,7 @@ export default {
     },
 
 
-    
+
     //---- update Params Table
     updateParams(newProps) {
       this.serverParams = Object.assign({}, this.serverParams, newProps);
@@ -2182,7 +2182,7 @@ export default {
             }else{
               this.CreatePOS();
             }
-       
+
         }
       });
     },
@@ -2291,7 +2291,7 @@ export default {
         .get("get_today_sales")
          .then(response => {
             this.today_sales = response.data;
-            
+
             setTimeout(() => {
               this.$bvModal.show("modal_today_sales");
               NProgress.done();
@@ -2533,7 +2533,7 @@ export default {
         NProgress.done();
         this.makeToast("danger", this.$t("InvalidData"), this.$t("Failed"));
       } else {
-        
+
         axios
           .post("pos/create_pos", {
             client_id: this.sale.client_id,
@@ -2572,7 +2572,7 @@ export default {
           });
       }
     },
-    
+
     //----------------------------------Create POS ------------------------------\\
     CreatePOS() {
       NProgress.start();
@@ -2758,7 +2758,7 @@ export default {
       this.CaclulTotal();
       this.$forceUpdate();
     },
-  
+
     //---------- keyup OrderTax
     keyup_OrderTax() {
       if (isNaN(this.sale.tax_rate)) {
@@ -2804,7 +2804,7 @@ export default {
             this.$t("Warning")
           );
           this.payment.amount = 0;
-        } 
+        }
         else if (this.payment.amount > this.GrandTotal) {
           this.makeToast(
             "warning",
@@ -2819,7 +2819,7 @@ export default {
     Verified_Received_Amount() {
       if (isNaN(this.payment.received_amount)) {
         this.payment.received_amount = 0;
-      } 
+      }
     },
     //-----------------------------------Delete Detail Product ------------------------------\\
     delete_Product_Detail(id) {
@@ -2946,7 +2946,7 @@ export default {
         );
       }
     },
-   
+
     //---------------------------------- Check if Product Exist in Order List ---------------------\\
     Check_Product_Exist(product, id) {
 
@@ -3100,7 +3100,7 @@ export default {
     background-color: #dcdfe6;
   }
 
-  
+
 .input-with-icon {
   display: flex;
   align-items: center;

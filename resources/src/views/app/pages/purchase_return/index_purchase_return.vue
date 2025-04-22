@@ -17,7 +17,7 @@
           placeholder: $t('Search_this_table'),
           enabled: true,
         }"
-        :select-options="{ 
+        :select-options="{
           enabled: true ,
           clearSelectionText: '',
         }"
@@ -51,7 +51,7 @@
               >
               <i class="i-File-Excel"></i> EXCEL
           </vue-excel-xlsx>
-        
+
         </div>
 
         <template slot="table-row" slot-scope="props">
@@ -330,7 +330,7 @@
       >
         <b-form @submit.prevent="Submit_Payment">
           <b-row>
-            
+
             <!-- date -->
             <b-col lg="4" md="12" sm="12">
               <validation-provider
@@ -382,7 +382,7 @@
                           {label: 'cheque', value: 'cheque'},
                           {label: 'Western Union', value: 'Western Union'},
                           {label: 'bank transfer', value: 'bank transfer'},
-                          {label: 'other', value: 'other'},
+                          {label: 'mtn momo and orange money', value: 'other'},
                           ]"
                   ></v-select>
                   <b-form-invalid-feedback>{{ errors[0] }}</b-form-invalid-feedback>
@@ -540,7 +540,7 @@ export default {
         Reglement: "",
         notes: ""
       },
-     
+
     };
   },
 
@@ -730,7 +730,7 @@ export default {
           this.$t("Warning")
         );
         this.facture.montant = 0;
-      } 
+      }
       else if (this.facture.montant > this.due) {
         this.makeToast(
           "warning",
@@ -746,7 +746,7 @@ export default {
     Verified_Received_Amount() {
       if (isNaN(this.facture.received_amount)) {
         this.facture.received_amount = 0;
-      } 
+      }
     },
 
 
@@ -795,7 +795,7 @@ export default {
       // Start the progress bar.
       NProgress.start();
       NProgress.set(0.1);
-     
+
       axios
         .get("return_purchase_pdf/" + id, {
           responseType: "blob", // important
@@ -827,7 +827,7 @@ export default {
       // Start the progress bar.
       NProgress.start();
       NProgress.set(0.1);
-     
+
        axios
         .get("payment_return_purchase_pdf/" + id, {
           responseType: "blob", // important
@@ -892,7 +892,7 @@ export default {
         foot: footer,
         startY: 70,
         didDrawPage: (data) => {
-          pdf.text("Purchase Returns List", 40, 25);        
+          pdf.text("Purchase Returns List", 40, 25);
         }
       });
 

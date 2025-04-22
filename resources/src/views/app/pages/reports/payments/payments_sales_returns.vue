@@ -5,16 +5,16 @@
     <div v-if="isLoading" class="loading_page spinner spinner-primary mr-3"></div>
 
       <b-col md="12" class="text-center" v-if="!isLoading">
-        <date-range-picker 
-          v-model="dateRange" 
-          :startDate="startDate" 
-          :endDate="endDate" 
+        <date-range-picker
+          v-model="dateRange"
+          :startDate="startDate"
+          :endDate="endDate"
            @update="Submit_filter_dateRange"
-          :locale-data="locale" > 
+          :locale-data="locale" >
 
           <template v-slot:input="picker" style="min-width: 350px;">
               {{ picker.startDate.toJSON().slice(0, 10)}} - {{ picker.endDate.toJSON().slice(0, 10)}}
-          </template>        
+          </template>
         </date-range-picker>
       </b-col>
 
@@ -70,7 +70,7 @@
     <b-sidebar id="sidebar-right" :title="$t('Filter')" bg-variant="white" right shadow>
       <div class="px-3 py-2">
         <b-row>
-         
+
           <!-- Reference -->
           <b-col md="12">
             <b-form-group :label="$t('Reference')">
@@ -117,7 +117,7 @@
                           {label: 'Western Union', value: 'Western Union'},
                           {label: 'bank transfer', value: 'bank transfer'},
                           {label: 'credit card', value: 'credit card'},
-                          {label: 'other', value: 'other'},
+                          {label: 'mtn momo and orange money', value: 'other'},
                           ]"
               ></v-select>
             </b-form-group>
@@ -183,28 +183,28 @@ export default {
       clients: [],
       rows: [{
           Reglement: 'Total',
-         
+
           children: [
-             
+
           ],
       },],
       sale_returns: [],
       today_mode: true,
-      startDate: "", 
-      endDate: "", 
-      dateRange: { 
-       startDate: "", 
-       endDate: "" 
-      }, 
-      locale:{ 
+      startDate: "",
+      endDate: "",
+      dateRange: {
+       startDate: "",
+       endDate: ""
+      },
+      locale:{
           //separator between the two ranges apply
-          Label: "Apply", 
-          cancelLabel: "Cancel", 
-          weekLabel: "W", 
-          customRangeLabel: "Custom Range", 
-          daysOfWeek: moment.weekdaysMin(), 
-          //array of days - see moment documenations for details 
-          monthNames: moment.monthsShort(), //array of month names - see moment documenations for details 
+          Label: "Apply",
+          cancelLabel: "Cancel",
+          weekLabel: "W",
+          customRangeLabel: "Custom Range",
+          daysOfWeek: moment.weekdaysMin(),
+          //array of days - see moment documenations for details
+          monthNames: moment.monthsShort(), //array of month names - see moment documenations for details
           firstDay: 1 //ISO first day of week - see moment documenations for details
         },
     };
@@ -264,7 +264,7 @@ export default {
   methods: {
 
     sumCount(rowObj) {
-     
+
     	let sum = 0;
       for (let i = 0; i < rowObj.children.length; i++) {
         sum += rowObj.children[i].montant;
@@ -350,10 +350,10 @@ export default {
         { title: "Account", dataKey: "account_name" },
         { title: "Amount", dataKey: "montant" }
       ];
-      
+
     // Calculate totals
      let totalGrandTotal = self.payments.reduce((sum, payment) => sum + parseFloat(payment.montant || 0), 0);
-     
+
      let footer = [{
        date: 'Total',
        Ref: '',
@@ -362,7 +362,7 @@ export default {
        Reglement: '',
        account_name: '',
        montant: `${totalGrandTotal.toFixed(2)}`,
-      
+
      }];
 
 
@@ -372,7 +372,7 @@ export default {
        foot: footer,
        startY: 70,
        didDrawPage: (data) => {
-         pdf.text("Payments Sale Returns", 40, 25);        
+         pdf.text("Payments Sale Returns", 40, 25);
        }
      });
 
@@ -399,7 +399,7 @@ export default {
 
         self.dateRange.startDate = today.getFullYear();
         self.dateRange.endDate = new Date().toJSON().slice(0, 10);
-        
+
       }
     },
 

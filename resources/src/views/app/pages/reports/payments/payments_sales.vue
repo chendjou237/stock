@@ -116,7 +116,7 @@
                           {label: 'Western Union', value: 'Western Union'},
                           {label: 'bank transfer', value: 'bank transfer'},
                           {label: 'credit card', value: 'credit card'},
-                          {label: 'other', value: 'other'},
+                          {label: 'mtn momo and orange money', value: 'other'},
                           ]"
               ></v-select>
             </b-form-group>
