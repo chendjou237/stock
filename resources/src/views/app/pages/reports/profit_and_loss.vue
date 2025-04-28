@@ -433,9 +433,7 @@ export default {
             this.warehouse_id
         )
         .then(response => {
-          console.log('Daily Payment Received:', response.data.data);
-          console.log('Daily Expenses:', response.data.data);
-          console.log('Daily Profit:', response.data.data);
+
           this.infos = response.data.data;
           this.warehouses = response.data.warehouses;
 
