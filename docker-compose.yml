@@ -14,6 +14,10 @@ services:
       DB_PASSWORD: ${DB_ROOT_PASSWORD}
     volumes:
       - ./:/var/www
+      # Exclude node_modules and dist from volume mount
+      - /var/www/node_modules
+      - /var/www/public/js
+      - /var/www/public/css
     networks:
       - stock_network
     depends_on:
@@ -28,6 +32,10 @@ services:
     volumes:
       - ./:/var/www
       - ./docker/nginx/conf.d:/etc/nginx/conf.d
+      # Exclude node_modules and dist from volume mount
+      - /var/www/node_modules
+      - /var/www/public/js
+      - /var/www/public/css
     networks:
       - stock_network
     depends_on:

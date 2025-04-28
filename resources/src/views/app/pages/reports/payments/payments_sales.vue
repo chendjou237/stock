@@ -240,12 +240,6 @@ export default {
           thClass: "text-left",
           sortable: false
         },
-      //   {
-      //     label: this.$t("Reference"),
-      //     field: "Ref",
-      //     tdClass: "text-left",
-      //     thClass: "text-left"
-      //   },
         {
           label: this.$t("Sale"),
           field: "Ref_Sale",
@@ -262,7 +256,11 @@ export default {
           label: this.$t("ModePaiement"),
           field: "Reglement",
           tdClass: "text-left",
-          thClass: "text-left"
+          thClass: "text-left",
+
+          formatter: (row) => {
+            return row.Reglement === 'other' ? 'mtn momo and orange money' : row.Reglement;
+          }
         },
         {
           label: this.$t("Account"),

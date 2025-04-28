@@ -9,7 +9,11 @@ RUN apt-get update && apt-get install -y \
     libxml2-dev \
     libzip-dev \
     zip \
-    unzip
+    unzip \
+    nodejs \
+    npm
+
+
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -26,8 +30,10 @@ WORKDIR /var/www
 # Copy existing application directory
 COPY . /var/www
 
-# Install dependencies
+# Install dependencies and build frontend
 RUN composer install --no-dev --prefer-dist --optimize-autoloader
+RUN npm install
+RUN npm run prod
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache

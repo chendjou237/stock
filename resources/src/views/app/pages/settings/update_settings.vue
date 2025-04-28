@@ -18,12 +18,12 @@
                                 {{version}}
                             </span>
                         </strong>
-                       
+
                     </div>
                     <div class="alert alert-info" v-else>
                         <strong>{{$t('You_already_have_the_latest_version')}} <span class="badge badge-pill badge-info"></span></strong>
                     </div>
-                    
+
                      <div class="col-md-12 mt-3">
                        <h5>Please follow these steps, To Update your application</h5>
                        <div class="allert alert-danger">Note 1: If you have made any changes in the code manually then your changes will be lost.</div>
@@ -31,7 +31,7 @@
                        <ul>
                         <li>
                            <strong>Step 1 : </strong>Take back up of your database,  Go to <a href="/app/settings/Backup">Backup</a> Click on Generate Backup ,
-                           You will find it in <strong>/storage/app/public/backup</strong>  and save it to your pc To restore it if there is an error , 
+                           You will find it in <strong>/storage/app/public/backup</strong>  and save it to your pc To restore it if there is an error ,
                            or Go to your PhpMyAdmin and export your database then and save it to your pc To restore it if there is an error
                         </li>
 
@@ -71,10 +71,10 @@
                      </div>
 
                      <div class="col-md-12 mt-3">
-                       <h4 class="mb-3">This video showing you the steps on how to upgrade stocky</h4>
+                       <h4 class="mb-3">This video showing you the steps on how to upgrade InnovBusiness</h4>
 
                        <iframe width="853" height="480" src="https://www.youtube.com/embed/VwfRtMkxS9U"
-                          title="how to update Stocky step by step" frameborder="0" 
+                          title="how to update InnovBusiness step by step" frameborder="0"
                           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                           allowfullscreen>
                         </iframe>
@@ -97,11 +97,11 @@ export default {
   },
   data() {
     return {
-      
+
       isLoading: true,
       SubmitProcessing:false,
       version:"",
-     
+
     };
   },
 
@@ -157,11 +157,11 @@ export default {
                 self.isLoading = false;
               }, 500);
             });
-        },   
+        },
 
 
 
-   
+
   }, //end Methods
 
   //----------------------------- Created function-------------------
