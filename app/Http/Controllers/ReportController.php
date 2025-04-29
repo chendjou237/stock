@@ -1596,15 +1596,40 @@ class ReportController extends BaseController
              }
          })
 
+
+
          ->select(
              DB::raw('SUM(GrandTotal) AS sum'),
              DB::raw("count(*) as nmbr")
          )->first();
 
+         //cash payments
+         $report_cash_sales = PaymentSale::where('deleted_at', '=', null)->where('Reglement', 'Cash')
+         ->whereBetween('date', array($start_date, $end_date))
+        ->select(
+             DB::raw('SUM(montant) AS sum'),
+             DB::raw("count(*) as nmbr")
+         )->first();
+         $item['cash_payments'] =   number_format($report_cash_sales->sum, 2, '.', ',');
+         $item['cash_payments_count'] =   $report_cash_sales->nmbr;
+         $item['cash_payments_percentage'] =   $report_cash_sales->nmbr/$report_total_sales->nmbr*100;
+
+         // $report_credit_sales = PaymentSale::where('deleted_at', '=', null)->where('payment_method', 'credit')
          $item['sales_sum'] =   number_format($report_total_sales->sum, 2, '.', ',');
 
          $item['sales_count'] =   $report_total_sales->nmbr;
 
+         $report_other_payments = PaymentSale::where('deleted_at', '=', null)
+         ->where('Reglement', '=', 'other')
+         ->whereBetween('date', array($start_date, $end_date))
+         ->select(
+             DB::raw('SUM(montant) AS sum'),
+             DB::raw("count(*) as nmbr")
+         )->first();
+
+         $item['other_payments'] =   number_format($report_other_payments->sum, 2, '.', ',');
+         $item['other_payments_count'] =   $report_other_payments->nmbr;
+         $item['other_payments_percentage'] =   $report_other_payments->nmbr/$report_total_sales->nmbr*100;
 
          //--------Purchase
          $report_total_purchases =  Purchase::where('deleted_at', '=', null)
@@ -1840,6 +1865,7 @@ class ReportController extends BaseController
         $item['daily_payment_received'] = number_format($daily_payment_received->sum, 2, '.', ',');
         $item['daily_expenses'] = number_format($daily_expenses->sum, 2, '.', ',');
         $item['daily_profit'] = number_format($daily_payment_received->sum - $daily_expenses->sum, 2, '.', ',');
+        $item['reste_encaisse'] = number_format($report_cash_sales->sum - $daily_expenses->sum, 2, '.', ',');
 
          return response()->json([
              'data' => $item ,
@@ -2424,7 +2450,7 @@ class ReportController extends BaseController
         $this->authorizeForUser($request->user('api'), 'users_report', User::class);
          // How many items do you want to display.
          $perPage = $request->limit;
-         $pageStart = \Request::get('page', 1);
+         $pageStart = Request::get('page', 1);
          // Start displaying items from this number;
          $offSet = ($pageStart * $perPage) - $perPage;
 
@@ -2718,7 +2744,7 @@ class ReportController extends BaseController
 
          // How many items do you want to display.
          $perPage = $request->limit;
-         $pageStart = \Request::get('page', 1);
+         $pageStart = Request::get('page', 1);
          // Start displaying items from this number;
          $offSet = ($pageStart * $perPage) - $perPage;
          $data = array();
@@ -2854,7 +2880,7 @@ class ReportController extends BaseController
 
         // How many items do you want to display.
         $perPage = $request->limit;
-        $pageStart = \Request::get('page', 1);
+        $pageStart = Request::get('page', 1);
         // Start displaying items from this number;
         $offSet = ($pageStart * $perPage) - $perPage;
         $order = $request->SortField;
@@ -3059,7 +3085,7 @@ class ReportController extends BaseController
         $this->authorizeForUser($request->user('api'), 'stock_report', Product::class);
         // How many items do you want to display.
         $perPage = $request->limit;
-        $pageStart = \Request::get('page', 1);
+        $pageStart = Request::get('page', 1);
         // Start displaying items from this number;
         $offSet = ($pageStart * $perPage) - $perPage;
 
@@ -3367,7 +3393,7 @@ class ReportController extends BaseController
         $this->authorizeForUser($request->user('api'), 'stock_report', Product::class);
         // How many items do you want to display.
         $perPage = $request->limit;
-        $pageStart = \Request::get('page', 1);
+        $pageStart = Request::get('page', 1);
         // Start displaying items from this number;
         $offSet = ($pageStart * $perPage) - $perPage;
 
@@ -3475,7 +3501,7 @@ class ReportController extends BaseController
         $this->authorizeForUser($request->user('api'), 'stock_report', Product::class);
         // How many items do you want to display.
         $perPage = $request->limit;
-        $pageStart = \Request::get('page', 1);
+        $pageStart = Request::get('page', 1);
         // Start displaying items from this number;
         $offSet = ($pageStart * $perPage) - $perPage;
 
@@ -4469,7 +4495,7 @@ class ReportController extends BaseController
 
         // How many items do you want to display.
         $perPage = $request->limit;
-        $pageStart = \Request::get('page', 1);
+        $pageStart = Request::get('page', 1);
         // Start displaying items from this number;
         $offSet = ($pageStart * $perPage) - $perPage;
         $order = $request->SortField;
@@ -4723,7 +4749,7 @@ class ReportController extends BaseController
 
         // How many items do you want to display.
         $perPage = $request->limit;
-        $pageStart = \Request::get('page', 1);
+        $pageStart = Request::get('page', 1);
         // Start displaying items from this number;
         $offSet = ($pageStart * $perPage) - $perPage;
         $order = $request->SortField;
@@ -4809,7 +4835,7 @@ class ReportController extends BaseController
 
          // How many items do you want to display.
          $perPage = $request->limit;
-         $pageStart = \Request::get('page', 1);
+         $pageStart = Request::get('page', 1);
          // Start displaying items from this number;
          $offSet = ($pageStart * $perPage) - $perPage;
          $order = $request->SortField;

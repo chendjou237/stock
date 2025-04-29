@@ -257,9 +257,8 @@ export default {
           field: "Reglement",
           tdClass: "text-left",
           thClass: "text-left",
-
-          formatter: (row) => {
-            return row.Reglement === 'other' ? 'mtn momo and orange money' : row.Reglement;
+          formatFn: (value) => {
+            return value === 'other' ? 'mtn/orange' : value;
           }
         },
         {

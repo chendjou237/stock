@@ -44,11 +44,116 @@
                   </p>
                   <p
                     class="text-primary text-24 line-height-1 m-0"
-                  >{{currentUser.currency}} {{infos.sales_sum}}</p>
+                  >{{currentUser.currency}} {{infos.paiement_sales}}</p>
                 </div>
               </div>
             </b-col>
             <!-- /.col -->
+            <!-- /.Cash Sales -->
+            <b-col md="4" sm="12">
+              <div class="card card-icon text-center mb-30">
+                <div class="card-body">
+                  <i class="i-Data-Upload"></i>
+                  <p class="text-muted mt-2 mb-2">
+                    <span class="bold">({{infos.cash_payments_count}})</span>
+                   Ventes en Cash
+                  </p>
+                  <p
+                    class="text-primary text-24 line-height-1 m-0"
+                  >{{currentUser.currency}} {{infos.cash_payments}}</p>
+                </div>
+              </div>
+            </b-col>
+            <!-- /.col -->
+            <!-- /.MTN/ORANGE Sales -->
+            <b-col md="4" sm="12">
+              <div class="card card-icon text-center mb-30">
+                <div class="card-body">
+                  <i class="i-Data-Upload"></i>
+                  <p class="text-muted mt-2 mb-2">
+                    <span class="bold">({{infos.other_payments_count}})</span>
+                   Ventes en MTN/ORANGE
+                  </p>
+                  <p
+                    class="text-primary text-24 line-height-1 m-0"
+                  >{{currentUser.currency}} {{infos.other_payments}}</p>
+                </div>
+              </div>
+            </b-col>
+            <!-- /.col -->
+      <!-- /.Paiements Net -->
+      <b-col md="4" sm="12">
+              <div class="card card-icon text-center mb-30">
+                <div class="card-body">
+                  <i class="i-Data-Upload"></i>
+                  <p class="text-muted mt-2 mb-2">Solde</p>
+                  <p
+                    class="text-primary text-24 line-height-1 m-0"
+                  >{{currentUser.currency}} {{infos.daily_profit}}</p>
+                </div>
+                <div class="card-footer">
+                  <p>
+                    (
+                    <span
+                      class="bold"
+                    >{{currentUser.currency}} {{infos.paiement_sales}}</span>
+                    <!-- {{$t('Daily Sales Payment')}} -->
+                    paiement total
+                    -
+                    <span
+                      class="bold"
+                    >{{currentUser.currency}} {{infos.daily_expenses}}</span>
+                    <!-- {{$t('Daily Expenses')}}) -->
+                    Depenses
+                  </p>
+                </div>
+              </div>
+            </b-col>
+            <!-- /.col -->
+      <!-- /.Paiements Net -->
+      <b-col md="4" sm="12">
+              <div class="card card-icon text-center mb-30">
+                <div class="card-body">
+                  <i class="i-Data-Upload"></i>
+                  <p class="text-muted mt-2 mb-2">Reste en caisse</p>
+                  <p
+                    class="text-primary text-24 line-height-1 m-0"
+                  >{{currentUser.currency}} {{infos.reste_encaisse}}</p>
+                </div>
+                <div class="card-footer">
+                  <p>
+                    (
+                    <span
+                      class="bold"
+                    >{{currentUser.currency}} {{infos.cash_payments}}</span>
+                    <!-- {{$t('Daily Sales Payment')}} -->
+                    paiement en cash
+                    -
+                    <span
+                      class="bold"
+                    >{{currentUser.currency}} {{infos.daily_expenses}}</span>
+                    <!-- {{$t('Daily Expenses')}}) -->
+                    Depenses
+                  </p>
+                </div>
+              </div>
+            </b-col>
+            <!-- /.col -->
+               <!-- /.Expense -->
+               <b-col md="4" sm="12">
+              <div class="card card-icon text-center mb-30">
+                <div class="card-body">
+                  <i class="i-Data-Upload"></i>
+                  <p class="text-muted mt-2 mb-2">
+                    <span class="bold">{{$t('Expenses')}}</span>
+                  </p>
+                  <p
+                    class="text-primary text-24 line-height-1 m-0"
+                  >{{currentUser.currency}} {{infos.expenses_sum}}</p>
+                </div>
+              </div>
+            </b-col>
+
             <!-- /.Total Purchases -->
             <b-col md="4" sm="12">
               <div class="card card-icon text-center mb-30">
@@ -100,20 +205,6 @@
             </b-col>
 
             <!-- /.col -->
-            <!-- /.Expense -->
-            <b-col md="4" sm="12">
-              <div class="card card-icon text-center mb-30">
-                <div class="card-body">
-                  <i class="i-Data-Upload"></i>
-                  <p class="text-muted mt-2 mb-2">
-                    <span class="bold">{{$t('Expenses')}}</span>
-                  </p>
-                  <p
-                    class="text-primary text-24 line-height-1 m-0"
-                  >{{currentUser.currency}} {{infos.expenses_sum}}</p>
-                </div>
-              </div>
-            </b-col>
 
              <!-- /.Revenue -->
             <b-col md="4" sm="12">
@@ -264,60 +355,8 @@
             </b-col>
             <!-- /.col -->
 
-            <!-- /.Daily Profit -->
-            <b-col md="4" sm="12">
-              <div class="card card-icon text-center mb-30">
-                <div class="card-body">
-                  <i class="i-Data-Upload"></i>
-                  <p class="text-muted mt-2 mb-2">{{$t('PaiementsNet')}}</p>
-                  <p
-                    class="text-primary text-24 line-height-1 m-0"
-                  >{{currentUser.currency}} {{infos.paiement_net}}</p>
-                </div>
-                <div class="card-footer">
-                  <p>
-                    (
-                    <span
-                      class="bold"
-                    >{{currentUser.currency}} {{infos.payment_received}}</span>
-                    {{$t('Recieved')}}
-                    -
-                    <span
-                      class="bold"
-                    >{{currentUser.currency}} {{infos.payment_sent}}</span>
-                    {{$t('Sent')}})
-                  </p>
-                </div>
-              </div>
-            </b-col>
-            <!-- /.col -->
-            <!-- /.Paiements Net -->
-            <b-col md="4" sm="12">
-              <div class="card card-icon text-center mb-30">
-                <div class="card-body">
-                  <i class="i-Data-Upload"></i>
-                  <p class="text-muted mt-2 mb-2">Daily Profit</p>
-                  <p
-                    class="text-primary text-24 line-height-1 m-0"
-                  >{{currentUser.currency}} {{infos.daily_profit}}</p>
-                </div>
-                <div class="card-footer">
-                  <p>
-                    (
-                    <span
-                      class="bold"
-                    >{{currentUser.currency}} {{infos.daily_payment_received}}</span>
-                    {{$t('Daily Sales Payment')}}
-                    -
-                    <span
-                      class="bold"
-                    >{{currentUser.currency}} {{infos.daily_expenses}}</span>
-                    {{$t('Daily Expenses')}})
-                  </p>
-                </div>
-              </div>
-            </b-col>
-            <!-- /.col -->
+
+
           </b-row>
         </b-col>
     </b-row>
