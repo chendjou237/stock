@@ -38,13 +38,14 @@ class ProductsController extends BaseController
         $this->authorizeForUser($request->user('api'), 'view', Product::class);
         // How many items do you want to display.
         $perPage = $request->limit;
-        $pageStart = Request::get('page', 1);
+        $pageStart = \Request::get('page', 1);
         // Start displaying items from this number;
         $offSet = ($pageStart * $perPage) - $perPage;
         $order = $request->SortField;
         $dir = $request->SortType;
         $helpers = new helpers();
         // Filter fields With Params to retrieve
+
         $columns = array(0 => 'name', 1 => 'category_id', 2 => 'brand_id', 3 => 'code');
         $param = array(0 => 'like', 1 => '=', 2 => '=', 3 => 'like');
         $data = array();
